@@ -6,7 +6,8 @@ def main():
         print("1. 记一笔")
         print("2. 查看所有记录")
         print("3. 查看余额")
-        print("4. 退出")
+        print("4. 删除记录")
+        print("5. 退出")
         choice = input("选择：")
 
         if choice == '1':
@@ -16,6 +17,8 @@ def main():
         elif choice == '3':
             check_balance()
         elif choice == '4':
+            delete_record()
+        elif choice == '5':
             print("再见~")
             break
         else:
@@ -71,6 +74,34 @@ def check_balance():
                 else:
                     balance -= int(line[1:].split()[0])
             print(f"余额为{balance}")
+    except FileNotFoundError:
+        print("还没有记录")
+
+def delete_record():
+    try:
+        with open("zhangben.txt", "r", encoding="utf-8") as f:
+            lines = f.readlines()
+
+        if len(lines) == 0:
+            print("还没有记录")
+            return
+        
+        for i, line in enumerate(lines):
+            print(i+1, line)
+
+        n = int(input("请选择要删除的序号：(输入0取消)"))
+
+        if n == 0:
+            print("已取消")
+            return
+        elif 1 <= n <= len(lines):
+            lines.pop(n-1)
+            with open("zhangben.txt", "w", encoding="utf-8") as c:
+                c.writelines(lines)
+            print("删除成功")
+        else:
+            print("输入错误")
+            
     except FileNotFoundError:
         print("还没有记录")
 
